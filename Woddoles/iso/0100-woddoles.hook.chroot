@@ -1,9 +1,0 @@
-#!/bin/bash
-# Roda dentro da imagem (chroot) durante o build da ISO.
-set -e
-chmod 755 /usr/local/bin/woddoles-*
-chmod 440 /etc/sudoers.d/woddoles
-chmod 644 /etc/systemd/system/woddoles-setup-games.service
-
-systemctl enable NetworkManager zramswap earlyoom thermald || true
-systemctl disable ModemManager.service bluetooth.service cups.service avahi-daemon.service 2>/dev/null || true
