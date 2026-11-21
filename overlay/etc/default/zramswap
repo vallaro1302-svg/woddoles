@@ -1,4 +1,0 @@
-# zram-tools: swap comprimida na RAM (4 GB de RAM rende como ~6 GB na prática).
-ALGO=zstd
-PERCENT=50
-PRIORITY=100
