@@ -1,0 +1,25 @@
+#!/bin/bash
+# Abre o Roblox via Sober (Flatpak). Wine não funciona mais por causa do anti-cheat.
+APP=org.vinegarhq.Sober
+CFG="$HOME/.var/app/$APP/config/sober/config.json"
+
+if ! flatpak info "$APP" >/dev/null 2>&1; then
+  yad --title="Woddoles" --center --text="Instalando o Sober (Roblox). Precisa de internet; isso pode demorar." \
+      --no-buttons --timeout=4 &
+  flatpak install -y --noninteractive flathub "$APP" || {
+    yad --title="Woddoles" --center --text="Falha ao instalar o Sober. Verifique a internet e tente de novo." --button=OK:0
+    exit 1
+  }
+fi
+
+# Intel HD 4000 (Ivy Bridge) tem Vulkan incompleto: força OpenGL na primeira execução.
+if [ ! -f "$CFG" ]; then
+  mkdir -p "$(dirname "$CFG")"
+  cat > "$CFG" <<'EOF'
+{
+  "use_opengl": true
+}
+EOF
+fi
+
+exec flatpak run "$APP"
