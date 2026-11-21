@@ -1,0 +1,4 @@
+xset s off -dpms &
+tint2 &
+nm-applet &
+woddoles-home &

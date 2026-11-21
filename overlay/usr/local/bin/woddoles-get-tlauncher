@@ -1,0 +1,28 @@
+#!/bin/bash
+# Baixa o TLauncher.jar do site oficial (tlauncher.org) para ~/.tlauncher
+DEST="$HOME/.tlauncher"
+JAR="$DEST/TLauncher.jar"
+TMP="$(mktemp)"
+mkdir -p "$DEST"
+
+fail() {
+  MSG="Não foi possível baixar o TLauncher automaticamente.\n\nBaixe o arquivo .jar em tlauncher.org (pelo Navegador do Woddoles) e salve como:\n$JAR"
+  if [ -n "$DISPLAY" ] && command -v yad >/dev/null; then
+    yad --title="Woddoles" --center --text="$MSG" --button=OK:0 2>/dev/null
+  else
+    echo -e "$MSG" >&2
+  fi
+  rm -f "$TMP"
+  exit 1
+}
+
+curl -fsSL --retry 3 -o "$TMP" https://tlauncher.org/jar || fail
+
+# Confere se é mesmo um .jar (zip) e não uma página HTML de erro.
+if [ "$(head -c2 "$TMP")" != "PK" ] || [ "$(stat -c%s "$TMP")" -lt 1000000 ]; then
+  fail
+fi
+
+mv "$TMP" "$JAR"
+chmod 644 "$JAR"
+echo "TLauncher instalado em $JAR"
