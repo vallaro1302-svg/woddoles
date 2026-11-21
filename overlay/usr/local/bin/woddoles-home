@@ -1,0 +1,21 @@
+#!/bin/bash
+# Tela inicial do Woddoles: escolhe o que jogar.
+# Enquanto um jogo/app roda, esta tela fica fechada; ao sair dele, ela volta.
+
+while true; do
+  yad --title="Woddoles" --class=woddoles-home --name=woddoles-home \
+      --center --width=380 --borders=16 --fixed \
+      --image=applications-games \
+      --text="<big><b>Woddoles</b></big>   Escolha o que jogar" \
+      --button="Minecraft (TLauncher)!applications-games:10" \
+      --button="Roblox!applications-games:11" \
+      --button="Navegador!web-browser:12" \
+      --button="Desligar!system-shutdown:13"
+  case $? in
+    10) woddoles-minecraft ;;
+    11) woddoles-roblox ;;
+    12) woddoles-browser ;;
+    13) sudo -n systemctl poweroff; sleep 10 ;;
+    *)  exit 0 ;;
+  esac
+done
